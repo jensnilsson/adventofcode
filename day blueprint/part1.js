@@ -1,5 +1,5 @@
 const fs = require('fs');
-fs.readFileSync('inputJens.txt', 'utf8', (err, data) => {
+fs.readFile('inputJens.txt', 'utf8', (err, data) => {
   if (err) {
     console.error(err);
     return;
