@@ -8,9 +8,6 @@ fs.readFile('inputJens.txt', 'utf8', (err, data) => {
   parseFile(data);
 });
 
-// red, green, blue
-const allowedCubes = { red: 12, green: 13, blue: 14 };
-
 function parseFile(fileData) {
   sum = 0;
   fileData.split(/\r?\n/).forEach((line) => {
@@ -25,24 +22,16 @@ function parseFile(fileData) {
       return gameSet;
     });
 
-    let isValid = true;
+    minSet = { green: 0, red: 0, blue: 0 };
     game.forEach((gameSet) => {
-      if (!isValid) {
-        return;
-      }
-
-      Object.keys(allowedCubes).forEach((color) => {
-        if (!isValid) {
-          return;
-        }
-        isValid = gameSet[color] <= allowedCubes[color];
+      Object.keys(minSet).forEach((color) => {
+        minSet[color] = Math.max(minSet[color], gameSet[color]);
       });
     });
 
-    if (isValid) {
-      sum += gameId;
-    }
-
-    console.log('gameid: ', gameId, 'game: ', game, 'sum: ', sum);
+    power = minSet.green * minSet.blue * minSet.red;
+    sum += power;
+    
+    console.log('gameid: ', gameId, ': ', game, 'minSet', minSet, 'power', power, 'sum: ', sum);
   });
 }

@@ -8,7 +8,6 @@ fs.readFile('inputJens.txt', 'utf8', (err, data) => {
   parseFile(data);
 });
 
-// red, green, blue
 const allowedCubes = { red: 12, green: 13, blue: 14 };
 
 function parseFile(fileData) {
