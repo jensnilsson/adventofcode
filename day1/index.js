@@ -1,5 +1,3 @@
-const list = ['1abc2', 'pqr3stu8vwx', 'a1b2c3d4e5f', 'treb7uchet'];
-
 const fs = require('fs');
 fs.readFile('input.txt', 'utf8', (err, data) => {
   if (err) {
@@ -35,12 +33,12 @@ function parseFile(fileData) {
   let sum = 0;
 
   fileData.split(/\r?\n/).forEach((line) => {
-    console.log('line', line);
     let first_interger = null;
     let last_interger = null;
 
-    for (let i = 0; i < line.length - 1; i++) {
+    for (let i = 0; i < line.length; i++) {
       const substring = line.substring(i);
+
       validDigits.forEach((digit) => {
         if (substring.startsWith(digit[0])) {
           first_interger = digit[1] * 10;
@@ -67,19 +65,8 @@ function parseFile(fileData) {
       }
     }
 
-    // for (const char of line) {
-    //   const number = parseInt(char);
-    //   if (!isNaN(number) || validDigits.includes(number)) {
-    //     first_interger = first_interger ? first_interger : number * 10;
-    //     last_interger = number;
-    //   }
-    // }
-
     const value = first_interger + last_interger;
-    console.log('value', value);
 
     sum += value;
   });
-
-  console.log('Sum: ', sum);
 }
