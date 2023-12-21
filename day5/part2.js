@@ -1,6 +1,6 @@
-const { log } = require('console');
-const fs = require('fs');
-fs.readFile('inputAlex.txt', 'utf8', (err, data) => {
+const { log } = require("console");
+const fs = require("fs");
+fs.readFile("inputJens.txt", "utf8", (err, data) => {
   if (err) {
     console.error(err);
     return;
@@ -9,28 +9,23 @@ fs.readFile('inputAlex.txt', 'utf8', (err, data) => {
 });
 
 function parseFile(fileData) {
-  let seedRanges = fileData
+  let seedList = fileData
     .split(/\r?\n/)[0]
-    .split('seeds: ')[1]
+    .split("seeds: ")[1]
     .trim()
-    .split(' ')
+    .split(" ")
     .map((seed) => parseInt(seed));
 
   let rangeStartSeed;
 
-  let seeds = [];
-  seedRanges.forEach((seed) => {
+  let seedRanges = [];
+  seedList.forEach((seed) => {
     if (!rangeStartSeed) {
       rangeStartSeed = seed;
     } else {
       const rangeLength = seed;
-      for (
-        let seed = rangeStartSeed;
-        seed < rangeStartSeed + rangeLength;
-        seed++
-      ) {
-        seeds.push(seed);
-      }
+      seedRange = [rangeStartSeed, rangeLength];
+      seedRanges = [...seedRanges, seedRange];
       rangeStartSeed = undefined;
     }
   });
@@ -46,7 +41,7 @@ function parseFile(fileData) {
     }
 
     if (/^\d/.test(line)) {
-      const range = line.split(' ').map((value) => parseInt(value));
+      const range = line.split(" ").map((value) => parseInt(value));
       currentMap = [...currentMap, range];
     }
   });
@@ -54,25 +49,29 @@ function parseFile(fileData) {
     maps = [...maps, currentMap];
   }
   let lowestValue = Infinity;
-  seeds.forEach((seed) => {
-    console.log('new seed', seed);
-    maps.forEach((map, mapIndex) => {
-      map.every((range) => {
-        const rangeStart = range[1];
-        const rangeEnd = range[1] + range[2] - 1;
 
-        const diff = range[0] - range[1];
-        if (seed >= rangeStart && seed <= rangeEnd) {
-          seed += diff;
-          console.log('->', seed, 'changed by map', mapIndex);
-          return false;
-        }
-        return true;
+  seedRanges.forEach((seedRange) => {
+    for (
+      let index = seedRange[0];
+      index < seedRange[0] + seedRange[1];
+      index++
+    ) {
+      let seed = index;
+      maps.forEach((map, mapIndex) => {
+        map.every((range) => {
+          const rangeStart = range[1];
+          const rangeEnd = range[1] + range[2] - 1;
+
+          const diff = range[0] - range[1];
+          if (seed >= rangeStart && seed <= rangeEnd) {
+            seed += diff;
+            return false;
+          }
+          return true;
+        });
       });
-    });
-
-    console.log('end', seed);
-    lowestValue = Math.min(seed, lowestValue);
-    console.log('lowest', lowestValue);
+      lowestValue = Math.min(seed, lowestValue);
+    }
+    console.log("lowest", lowestValue);
   });
 }
