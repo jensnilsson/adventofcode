@@ -4,27 +4,19 @@ use std::{
 };
 
 pub fn execute(lines: Lines<BufReader<File>>) {
-    let sum: u32 = lines
+    let (vec1, vec2): (Vec<isize>, Vec<isize>) = lines
         .map(|line| {
             let line = line.unwrap();
-            let first_num = line
-                .chars()
-                .find(|char| char.is_ascii_digit())
-                .unwrap()
-                .to_digit(10)
-                .unwrap()
-                * 10;
-            let last_num = line
-                .chars()
-                .rev()
-                .find(|char| char.is_ascii_digit())
-                .unwrap()
-                .to_digit(10)
-                .unwrap();
-            print!("{line} {first_num} {last_num} \n");
-            first_num + last_num
+            let mut items = line.split("   ").lines();
+            let Some(first_item) = items.next();
+            let Some(second_item) = items.next();
+            (first_item, second_item)
         })
-        .sum();
+        .unzip();
 
+    vec1.sort();
+    vec2.sort();
+
+    sum = 0;
     print!("sum: {sum}");
 }
