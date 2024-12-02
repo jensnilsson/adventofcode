@@ -19,10 +19,10 @@ function parseFile(fileData) {
   const sortedFirstColumn = firstColumn.sort((a, b) => a - b);
   const sortedSecondColumn = secondColumn.sort((a, b) => a - b);
 
-  const answer = sortedFirstColumn.reduce((acc, curr, index) => {
-    const diff = Math.abs(curr - sortedSecondColumn[index]);
-    return (acc += diff);
-  }, 0);
+  const answer = sortedFirstColumn.reduce(
+    (acc, curr, index) => (acc += Math.abs(curr - sortedSecondColumn[index])),
+    0
+  );
 
   console.log('answer', answer);
 }
