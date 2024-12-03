@@ -1,5 +1,5 @@
-const fs = require('fs');
-fs.readFile('inputAlex.txt', 'utf8', (err, data) => {
+const fs = require("fs");
+fs.readFile("inputJens.txt", "utf8", (err, data) => {
   if (err) {
     console.error(err);
     return;
@@ -24,5 +24,5 @@ function parseFile(fileData) {
     0
   );
 
-  console.log('answer', answer);
+  console.log("answer", answer);
 }

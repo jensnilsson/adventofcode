@@ -4,19 +4,26 @@ use std::{
 };
 
 pub fn execute(lines: Lines<BufReader<File>>) {
-    let (vec1, vec2): (Vec<isize>, Vec<isize>) = lines
+    let (mut vec1, mut vec2): (Vec<i64>, Vec<i64>) = lines
         .map(|line| {
             let line = line.unwrap();
-            let mut items = line.split("   ").lines();
-            let Some(first_item) = items.next();
-            let Some(second_item) = items.next();
-            (first_item, second_item)
+            let items: Vec<&str> = line.split_whitespace().collect();
+            let first_item = *items.first().expect("shoud always exist");
+            let first_value = first_item.parse::<i64>().expect("should be number");
+            let second_item = *items.last().expect("shoud always exist");
+            let second_value = second_item.parse::<i64>().expect("should be number");
+            (first_value, second_value)
         })
         .unzip();
 
     vec1.sort();
     vec2.sort();
 
-    sum = 0;
+    let sum: i64 = vec1
+        .iter()
+        .enumerate()
+        .map(|(index, item)| (item - vec2[index]).abs())
+        .sum();
+
     print!("sum: {sum}");
 }
