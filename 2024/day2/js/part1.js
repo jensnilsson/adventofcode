@@ -1,5 +1,5 @@
-const fs = require("fs");
-fs.readFile("inputJens.txt", "utf8", (err, data) => {
+const fs = require('fs');
+fs.readFile('inputAlex.txt', 'utf8', (err, data) => {
   if (err) {
     console.error(err);
     return;
@@ -10,29 +10,29 @@ fs.readFile("inputJens.txt", "utf8", (err, data) => {
 function parseFile(fileData) {
   let answer = 0;
 
-  fileData.split(/\r?\n/).forEach((line, row) => {
-    const values = line.split(" ").map(Number);
-    let isIncrease;
-    const isSafe = values.every((value, index) => {
-      if (index === 0) {
-        return true;
-      }
-      const previousValue = values[index - 1];
-      if (index === 1) {
-        const diff = Math.abs(previousValue - value);
-        // console.log({ previousValue, value, diff });
-        return diff > 0 && diff < 4;
-      }
-      if (index > 1) {
-        isIncrease = values[index - 2] < previousValue;
-        diff = isIncrease ? value - previousValue : previousValue - value;
-        //console.log({ previousValue, value, diff, isIncrease });
-        return diff > 0 && diff < 4;
-      }
-    });
-    console.log(row, isSafe);
-    answer += isSafe;
+  fileData.split(/\r?\n/).forEach((line, index) => {
+    const values = line.split(' ').map(Number);
+
+    const safe = isSafe(values);
+    answer += safe ? 1 : 0;
   });
 
-  console.log("answer", answer);
+  console.log('answer', answer);
+}
+
+function isSafe(values) {
+  const isIncrease = isIncreasing(values[0], values[1]);
+
+  for (let i = 0; i < values.length - 1; i++) {
+    diff = isIncrease ? values[i + 1] - values[i] : values[i] - values[i + 1];
+    if (diff < 1 || diff > 3) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isIncreasing(first, second) {
+  return first < second;
 }

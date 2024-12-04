@@ -1,5 +1,5 @@
-const fs = require("fs");
-fs.readFile("inputJens.txt", "utf8", (err, data) => {
+const fs = require('fs');
+fs.readFile('inputAlex.txt', 'utf8', (err, data) => {
   if (err) {
     console.error(err);
     return;
@@ -8,18 +8,42 @@ fs.readFile("inputJens.txt", "utf8", (err, data) => {
 });
 
 function parseFile(fileData) {
-  let firstColumn = [];
-  let secondColumn = [];
+  let answer = 0;
+
   fileData.split(/\r?\n/).forEach((line) => {
-    const parts = line.split(/\s+/);
-    firstColumn = [...firstColumn, Number(parts[0])];
-    secondColumn = [...secondColumn, Number(parts[1])];
+    let values = line.split(' ').map(Number);
+
+    let { safe, failedIndex } = isSafe(values);
+    for (let i = failedIndex - 1; i < failedIndex + 2; i++) {
+      if (!safe) {
+        safe = isSafeAfterRemoval(values, i);
+      }
+    }
+
+    answer += safe ? 1 : 0;
   });
 
-  const sum = firstColumn.reduce((acc, curr) => {
-    const count = secondColumn.filter((item) => item === curr).length;
-    return (acc += curr * count);
-  }, 0);
+  console.log('answer', answer);
+}
 
-  console.log("sum", sum);
+function isSafe(values) {
+  const isIncrease = isIncreasing(values[0], values[1]);
+
+  for (let i = 0; i < values.length - 1; i++) {
+    diff = isIncrease ? values[i + 1] - values[i] : values[i] - values[i + 1];
+    if (diff < 1 || diff > 3) {
+      return { safe: false, failedIndex: i };
+    }
+  }
+
+  return { safe: true, failedIndex: -1 };
+}
+
+function isIncreasing(first, second) {
+  return first < second;
+}
+
+function isSafeAfterRemoval(values, failedIndex) {
+  const pruned = values.filter((value, index) => index !== failedIndex);
+  return isSafe(pruned).safe;
 }
