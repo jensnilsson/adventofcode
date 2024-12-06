@@ -4,7 +4,7 @@ use std::{
 };
 
 pub fn execute(lines: Lines<BufReader<File>>) {
-    let (mut vec1, mut vec2): (Vec<i64>, Vec<i64>) = lines
+    let (mut vec1, vec2): (Vec<i64>, Vec<i64>) = lines
         .map(|line| {
             let line = line.unwrap();
             let items: Vec<&str> = line.split_whitespace().collect();
@@ -16,10 +16,13 @@ pub fn execute(lines: Lines<BufReader<File>>) {
         })
         .unzip();
 
-    let sum: i64 = vec1.iter().map(|(item)| {(
-        
-        item
-    )}).sum();
+    let sum: i64 = vec1
+        .iter()
+        .map(|(item)| {
+            let occurance = vec2.iter().filter(|item2| item == *item2).count() as i64;
+            item * occurance
+        })
+        .sum();
 
     print!("sum: {sum}");
 }

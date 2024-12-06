@@ -4,6 +4,7 @@ use std::io::{self, BufRead};
 use std::path::Path;
 
 mod part1;
+mod part2;
 
 fn main() -> Result<()> {
     // Parse arguments
@@ -24,7 +25,7 @@ fn main() -> Result<()> {
     // Parse command and act accordingly
     match part.as_str() {
         "p1" => part1::execute(lines),
-        "p2" => part1::execute(lines),
+        "p2" => part2::execute(lines),
         _ => bail!("Missing or invalid command passed: {}", part),
     }
 
