@@ -1,5 +1,5 @@
-const fs = require('fs');
-fs.readFile('inputAlex.txt', 'utf8', (err, data) => {
+const fs = require("fs");
+fs.readFile("inputJens.txt", "utf8", (err, data) => {
   if (err) {
     console.error(err);
     return;
@@ -11,7 +11,7 @@ function parseFile(fileData) {
   let answer = 0;
 
   fileData.split(/\r?\n/).forEach((line) => {
-    let values = line.split(' ').map(Number);
+    let values = line.split(" ").map(Number);
 
     let { safe, failedIndex } = isSafe(values);
     for (let i = failedIndex - 1; i < failedIndex + 2; i++) {
@@ -23,7 +23,7 @@ function parseFile(fileData) {
     answer += safe ? 1 : 0;
   });
 
-  console.log('answer', answer);
+  console.log("answer", answer);
 }
 
 function isSafe(values) {
