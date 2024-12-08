@@ -48,9 +48,8 @@ pub fn execute(lines: Lines<BufReader<File>>) {
     let mut sum: usize = 0;
 
     let mut row_index = 0;
-    let mut column_index = 0;
-
     for line in &matrix {
+        let mut column_index = 0;
         for char in line {
             if char == &XMAS::X {
                 let xmas_count_for_x = PATTERNS
@@ -94,7 +93,6 @@ pub fn execute(lines: Lines<BufReader<File>>) {
             }
             column_index = column_index + 1;
         }
-        column_index = 0;
         row_index = row_index + 1;
     }
 
