@@ -4,6 +4,7 @@ fs.readFile("inputJens.txt", "utf8", (err, data) => {
     console.error(err);
     return;
   }
+  // Jens
   parseFile(data);
 });
 
