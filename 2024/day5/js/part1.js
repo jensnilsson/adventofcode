@@ -1,5 +1,5 @@
-const fs = require('fs');
-fs.readFile('inputAlex.txt', 'utf8', (err, data) => {
+const fs = require("fs");
+fs.readFile("inputAlex.txt", "utf8", (err, data) => {
   if (err) {
     console.error(err);
     return;
@@ -14,12 +14,12 @@ function parseFile(fileData) {
   let answer = 0;
 
   fileData.split(/\r?\n/).forEach((line) => {
-    if (line === '') {
+    if (line === "") {
       hasSeenEmptyLine = true;
       return;
     }
     if (!hasSeenEmptyLine) {
-      const rule = line.split('|');
+      const rule = line.split("|");
       if (!ruleMap[rule[1]]) {
         ruleMap[rule[1]] = [rule[0]];
       } else {
@@ -29,7 +29,7 @@ function parseFile(fileData) {
 
     if (hasSeenEmptyLine) {
       let isValid = true;
-      const updateList = line.split(',');
+      const updateList = line.split(",");
       updateList.forEach((entry, index) => {
         const remainingEntries = updateList.slice(index + 1);
         const valuesBefore = ruleMap[entry];
