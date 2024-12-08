@@ -12,15 +12,15 @@ pub enum XMAS {
     BLANK,
 }
 
-const PATTERNS: [[(i64, i64); 3]; 8] = [
-    [(0, 1), (0, 2), (0, 3)],       // right
-    [(1, 1), (2, 2), (3, 3)],       // right down
-    [(1, 0), (2, 0), (3, 0)],       // down
-    [(1, -1), (2, -2), (3, -3)],    // left down
-    [(0, -1), (0, -2), (0, -3)],    // left
-    [(-1, -1), (-2, -2), (-3, -3)], // left up
-    [(-1, 0), (-2, 0), (-3, 0)],    // up
-    [(-1, 1), (-2, 2), (-3, 3)],    // right up
+const PATTERNS: [[(XMAS, i64, i64); 3]; 8] = [
+    [(XMAS::M, 0, 1), (XMAS::A, 0, 2), (XMAS::S, 0, 3)], // right
+    [(XMAS::M, 1, 1), (XMAS::A, 2, 2), (XMAS::S, 3, 3)], // right down
+    [(XMAS::M, 1, 0), (XMAS::A, 2, 0), (XMAS::S, 3, 0)], // down
+    [(XMAS::M, 1, -1), (XMAS::A, 2, -2), (XMAS::S, 3, -3)], // left down
+    [(XMAS::M, 0, -1), (XMAS::A, 0, -2), (XMAS::S, 0, -3)], // left
+    [(XMAS::M, -1, -1), (XMAS::A, -2, -2), (XMAS::S, -3, -3)], // left up
+    [(XMAS::M, -1, 0), (XMAS::A, -2, 0), (XMAS::S, -3, 0)], // up
+    [(XMAS::M, -1, 1), (XMAS::A, -2, 2), (XMAS::S, -3, 3)], // right up
 ];
 
 pub fn execute(lines: Lines<BufReader<File>>) {
@@ -41,10 +41,6 @@ pub fn execute(lines: Lines<BufReader<File>>) {
         })
         .collect();
 
-    for line in &matrix {
-        //println!("{:?}", line);
-    }
-
     let mut sum: usize = 0;
 
     let mut row_index = 0;
@@ -55,32 +51,22 @@ pub fn execute(lines: Lines<BufReader<File>>) {
                 let xmas_count_for_x = PATTERNS
                     .iter()
                     .filter_map(|pattern| {
-                        let mut part_index = 0;
                         for part in pattern {
-                            let row_part = (row_index + part.0) as usize;
+                            let row_part = (row_index + part.1) as usize;
                             let row_vec = matrix.get(row_part);
 
                             if let Some(row) = row_vec {
-                                let column_part = (column_index + part.1) as usize;
+                                let column_part = (column_index + part.2) as usize;
                                 let value = row.get(column_part);
-
-                                let search_for = match part_index {
-                                    0 => XMAS::M,
-                                    1 => XMAS::A,
-                                    2 => XMAS::S,
-                                    _ => XMAS::BLANK,
-                                };
 
                                 match value {
                                     Some(value) => {
-                                        if value != &search_for {
+                                        if value != &part.0 {
                                             return None;
                                         }
                                     }
                                     _ => return None,
                                 }
-
-                                part_index += 1
                             } else {
                                 return None;
                             }
