@@ -55,10 +55,6 @@ pub fn execute(lines: Lines<BufReader<File>>) {
         })
         .collect();
 
-    for line in &matrix {
-        //println!("{:?}", line);
-    }
-
     let mut sum: usize = 0;
 
     let mut row_index = 0;
@@ -69,7 +65,6 @@ pub fn execute(lines: Lines<BufReader<File>>) {
                 let mas_count_for_a = PATTERNS
                     .iter()
                     .filter_map(|pattern| {
-                        let mut part_index = 0;
                         for part in pattern {
                             let row_part = (row_index + part.1) as usize;
                             let row_vec = matrix.get(row_part);
@@ -86,8 +81,6 @@ pub fn execute(lines: Lines<BufReader<File>>) {
                                     }
                                     _ => return None,
                                 }
-
-                                part_index += 1
                             } else {
                                 return None;
                             }
