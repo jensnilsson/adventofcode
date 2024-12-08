@@ -1,5 +1,5 @@
-const fs = require("fs");
-fs.readFile("inputJens.txt", "utf8", (err, data) => {
+const fs = require('fs');
+fs.readFile('inputAlex.txt', 'utf8', (err, data) => {
   if (err) {
     console.error(err);
     return;
@@ -10,12 +10,12 @@ fs.readFile("inputJens.txt", "utf8", (err, data) => {
 function parseFile(fileData) {
   let answer = 0;
   let reading = true;
-  let newData = "";
+  let newData = '';
 
   const parts = fileData.split(/(don't\(\)|do\(\))/g);
 
   parts.forEach((part) => {
-    if (part === "do()") {
+    if (part === 'do()') {
       reading = true;
 
       if (reading) {
@@ -32,17 +32,16 @@ function parseFile(fileData) {
 
   const regex = /mul\(\d+,\d+\)/g;
   const matches = newData.match(regex);
-  console.log("matches:", matches);
 
   matches?.map((match) => {
     const values = match
-      .replace("mul(", "")
-      .replace(")", "")
-      .split(",")
+      .replace('mul(', '')
+      .replace(')', '')
+      .split(',')
       .map(Number);
 
     answer += values[0] * values[1];
   });
 
-  console.log("answer", answer);
+  console.log('answer', answer);
 }
